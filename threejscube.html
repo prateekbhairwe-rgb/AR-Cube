@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Three.js — Hand Controlled Multi-Cube with VR</title>
+  <link rel="stylesheet" href="./Cube.css">
+</head>
+
+<body>
+  <button id="vr-exit" class="vr-exit">Exit VR ✕</button>
+
+  <div class="wrap" id="main-wrap">
+    <aside class="panel" id="control-panel">
+      <div class="brand">
+        <div class="logo">🤌</div>
+        <div>
+          <h1>Hand-Controlled Multi-Cube</h1>
+          <p class="lead">Pinch to spawn cube grid!</p>
+        </div>
+      </div>
+
+      <div class="connection-status" id="connection-status">
+        <span class="status-indicator"></span>
+        Disconnected from server
+      </div>
+
+      <div style="display:flex;gap:8px">
+        <button id="start-btn" class="btn">Start Camera</button>
+        <button id="stop-btn" class="btn danger">Stop</button>
+      </div>
+
+      <div style="margin-top:10px">
+        <label style="font-size:12px;color:#9aa6b2;display:block;margin-bottom:4px">VR Focus (Eye Spacing)</label>
+        <input type="range" id="ipd-slider" min="0" max="0.2" step="0.001" value="0.064" style="width:100%">
+      </div>
+
+      <button id="vr-btn" class="btn vr" style="margin-top:8px">📱 Cardboard VR Mode 🥽</button>
+
+      <div class="status-box">
+        <h3 style="margin:0 0 10px 0;font-size:14px;color:#7c5cff">Live Hand Data</h3>
+
+        <div class="status-item">
+          <span class="status-label">Mode</span>
+          <span class="status-value" id="mode-status">
+            <span class="status-indicator" id="mode-indicator"></span>
+            <span id="mode-text">Idle</span>
+          </span>
+        </div>
+
+        <div class="status-item">
+          <span class="status-label">Grid Size</span>
+          <span class="status-value" id="grid-size">1x1</span>
+        </div>
+
+        <div class="status-item">
+          <span class="status-label">Total Cubes</span>
+          <span class="status-value" id="cube-count">1</span>
+        </div>
+
+        <div class="status-item">
+          <span class="status-label">Position X</span>
+          <span class="status-value" id="pos-x">0.00</span>
+        </div>
+
+        <div class="status-item">
+          <span class="status-label">Position Y</span>
+          <span class="status-value" id="pos-y">0.00</span>
+        </div>
+      </div>
+
+      <div class="instructions">
+        <strong>📋 How to Control:</strong>
+        <strong style="color:#ff6b6b">🤌 Pinch Mode (BOTH hands pinch):</strong>
+        • Pinch thumb+index on BOTH hands<br>
+        • Stretch horizontally = More cubes in X<br>
+        • Stretch vertically = More cubes in Y<br>
+        <strong style="color:#4ade80;margin-top:8px">👋 Normal Mode (2 Index Fingers):</strong>
+        • Distance = Cube size<br>
+        • Position = X/Y control<br>
+        • Angle = Z rotation<br>
+        <strong style="color:#ff6b6b;margin-top:8px">📱 Cardboard VR:</strong>
+        • Works on ANY phone!<br>
+        • Split-screen for VR headset<br>
+        • Gyroscope head tracking<br>
+        • Insert into Google Cardboard
+      </div>
+
+    </aside>
+
+    <main class="stage" id="stage">
+      <div id="three-root"></div>
+
+      <div class="hud" id="hud">
+        <h3>Cube Status</h3>
+        <div class="coords" id="coords">
+          Mode: Normal<br>
+          Grid: 1x1<br>
+          Position: x:0.00 y:0.00
+        </div>
+      </div>
+
+      <footer id="footer">WebSocket: ws://localhost:5000</footer>
+    </main>
+  </div>
+
+  <!-- Hidden video element for MediaPipe and Texture -->
+  <video id="input_video" style="display:none" playsinline></video>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <!-- Socket.IO is optional now, but keeping it won't hurt if we want hybrid later, though we are moving logic to client -->
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script src="./Cube.js"></script>
+</body>
+
+</html>
